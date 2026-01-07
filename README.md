@@ -1,6 +1,8 @@
-# React + TypeScript + Vite
+# React + Vite (JavaScript)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project uses React with Vite and plain JavaScript (no TypeScript). It includes ESLint and a small, accessible UI for a payment success flow.
+
+> Note: The project was converted from TypeScript to JavaScript to simplify the build and deployment pipeline.
 
 Currently, two official plugins are available:
 
