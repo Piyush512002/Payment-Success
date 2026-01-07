@@ -26,11 +26,19 @@ const RewardScratchCard = ({ reward = null, isScratched = false, onReveal = null
   
   // Sync local state with prop changes (when parent confirms scratch state)
   useEffect(() => {
-    if (isScratched) {
-      setLocalScratched(true);
-      isRevealedRef.current = true;
+    // Ensure the component resets when the reward or its scratch state changes
+    setLocalScratched(!!isScratched);
+    isRevealedRef.current = !!isScratched;
+
+    // Reset canvas visibility/state when switching between rewards
+    const canvas = canvasRef.current;
+    if (canvas) {
+      canvas.style.transition = '';
+      canvas.style.opacity = isScratched ? '0' : '1';
+      canvas.style.pointerEvents = isScratched ? 'none' : 'auto';
+      canvas.style.cursor = isScratched ? 'default' : 'crosshair';
     }
-  }, [isScratched]);
+  }, [isScratched, reward?.id]);
   
   // Use local scratched for interaction state, prop for disabled state
   const scratched = localScratched;
