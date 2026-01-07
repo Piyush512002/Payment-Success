@@ -854,15 +854,40 @@
   position: absolute;
   right: 12px;
   top: -28px;
-  background: rgba(0,0,0,0.05);
+  z-index: 40;
+}
+
+.reward-count-input {
+  width: 68px;
   padding: 6px 10px;
   border-radius: 999px;
   color: var(--text);
   font-weight: 700;
   font-size: 0.95rem;
-  z-index: 40;
+  border: 1px solid rgba(17,24,39,0.06);
+  background: rgba(255,255,255,0.98);
+  text-align: center;
+  -moz-appearance: textfield;
 }
 
+/* Hide default number input spinner on WebKit while keeping a clean control */
+.reward-count-input::-webkit-inner-spin-button,
+.reward-count-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+@media (max-width: 480px) {
+  .reward-count {
+    top: -22px;
+    right: 10px;
+  }
+  .reward-count-input {
+    width: 56px;
+    font-size: 0.9rem;
+    padding: 6px 8px;
+  }
+}
 .carousel-card {
   width: 100%;
   display: flex;
