@@ -57,6 +57,24 @@ const PaymentSuccess = () => {
       >
         {showRewards ? (
           <>
+            <div className="rewards-header">
+              <button
+                type="button"
+                className="rewards-back-button"
+                onClick={() => setShowRewards(false)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setShowRewards(false);
+                  }
+                }}
+                aria-label="Back to payment details"
+              >
+                ← Back
+              </button>
+              <h2 className="rewards-view-title">Your Rewards</h2>
+            </div>
+
             {rewardsData && rewardsData.rewards && (
               <RewardsContainer 
                 rewards={rewardsData.rewards}
