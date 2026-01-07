@@ -256,13 +256,13 @@ const RewardScratchCard = ({ reward = null, isScratched = false, onReveal = null
           style={{ userSelect: 'none', WebkitUserSelect: 'none', MozUserSelect: 'none', msUserSelect: 'none' }}
         >
           <div
-            className={`reward-text${scratched ? ' reveal-fade-in' : ''}`}
+            className={`reward-text${scratched ? ' reveal-fade-in' : ' hidden-unrevealed'}`}
             aria-live="polite"
             aria-atomic="true"
             style={{ 
-              opacity: scratched ? 1 : 0.12, 
-              filter: scratched ? 'blur(0)' : 'blur(0px)', 
-              zIndex: 10,
+              opacity: scratched ? 1 : 0,
+              transform: scratched ? 'translateY(0)' : 'translateY(4px)',
+              zIndex: 2,
               userSelect: 'none',
               WebkitUserSelect: 'none',
               MozUserSelect: 'none',

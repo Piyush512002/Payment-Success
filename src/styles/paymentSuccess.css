@@ -516,9 +516,17 @@
   animation: reward-fade-in 0.9s cubic-bezier(.25, .46, .45, .94) 0.1s both;
 }
 
+/* Hidden state for unrevealed rewards: fully transparent and lightly blurred to avoid accidental visibility */
+.hidden-unrevealed {
+  opacity: 0 !important;
+  transform: translateY(4px) !important;
+  filter: blur(4px) !important;
+  pointer-events: none !important;
+}
+
 @keyframes reward-fade-in {
   0% { 
-    opacity: 0.12; 
+    opacity: 0; 
     filter: blur(4px);
     transform: scale(0.98);
   }
