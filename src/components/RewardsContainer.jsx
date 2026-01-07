@@ -2,6 +2,10 @@ import React, { useState, useEffect, useCallback } from 'react';
 import RewardScratchCard from './RewardScratchCard';
 import '../styles/paymentSuccess.css';
 
+// Icons and animation
+import { ArrowLeft, ArrowRight } from 'phosphor-react';
+import { motion, AnimatePresence } from 'framer-motion';
+
 /**
  * RewardsContainer - shows one reward at a time with arrow navigation
  * and stacked previews behind to mimic coupon stacks in payment apps.
@@ -15,14 +19,21 @@ const RewardsContainer = ({
   if (!rewards || rewards.length === 0) return null;
 
   const [index, setIndex] = useState(0);
+  const [dir, setDir] = useState(0); // navigation direction for animation
 
   useEffect(() => {
     // keep index within bounds if rewards change
     if (index > rewards.length - 1) setIndex(Math.max(0, rewards.length - 1));
   }, [rewards.length, index]);
 
-  const goPrev = useCallback(() => setIndex((i) => Math.max(0, i - 1)), []);
-  const goNext = useCallback(() => setIndex((i) => Math.min(rewards.length - 1, i + 1)), [rewards.length]);
+  const goPrev = useCallback(() => {
+    setDir(-1);
+    setIndex((i) => Math.max(0, i - 1));
+  }, []);
+  const goNext = useCallback(() => {
+    setDir(1);
+    setIndex((i) => Math.min(rewards.length - 1, i + 1));
+  }, [rewards.length]);
 
   // keyboard navigation: left/right when focused inside container
   const handleKeyDown = (e) => {
@@ -86,24 +97,30 @@ const RewardsContainer = ({
                     const val = Number(e.target.value);
                     if (!Number.isNaN(val)) {
                       const newIndex = Math.min(Math.max(1, Math.floor(val)), rewards.length) - 1;
+                      // set direction for animation based on compare
+                      setDir(newIndex > index ? 1 : newIndex < index ? -1 : 0);
                       setIndex(newIndex);
                     }
                   }}
                   onKeyDown={(e) => {
                     if (e.key === 'ArrowUp') {
                       e.preventDefault();
+                      setDir(1);
                       setIndex((i) => Math.min(rewards.length - 1, i + 1));
                     }
                     if (e.key === 'ArrowDown') {
                       e.preventDefault();
+                      setDir(-1);
                       setIndex((i) => Math.max(0, i - 1));
                     }
                     if (e.key === 'ArrowLeft') {
                       e.preventDefault();
+                      setDir(-1);
                       setIndex((i) => Math.max(0, i - 1));
                     }
                     if (e.key === 'ArrowRight') {
                       e.preventDefault();
+                      setDir(1);
                       setIndex((i) => Math.min(rewards.length - 1, i + 1));
                     }
                   }}
@@ -111,12 +128,24 @@ const RewardsContainer = ({
                 />
               </div>
               <div className="carousel-card">
-                {current.title && <h3 className="reward-item-title visible-title">{current.title}</h3>}
-                <RewardScratchCard
-                  reward={current}
-                  isScratched={current.isScratched}
-                  onReveal={onReveal}
-                />
+                <AnimatePresence initial={false} custom={dir} exitBeforeEnter>
+                  <motion.div
+                    key={index}
+                    custom={dir}
+                    initial={(d) => ({ opacity: 0, x: d > 0 ? 40 : -40 })}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={(d) => ({ opacity: 0, x: d > 0 ? -40 : 40 })}
+                    transition={{ duration: 0.32, ease: [0.2, 0.9, 0.2, 1] }}
+                    className="carousel-card-inner"
+                  >
+                    {current.title && <h3 className="reward-item-title visible-title">{current.title}</h3>}
+                    <RewardScratchCard
+                      reward={current}
+                      isScratched={current.isScratched}
+                      onReveal={onReveal}
+                    />
+                  </motion.div>
+                </AnimatePresence>
               </div>
             </div>
 

@@ -930,9 +930,24 @@
   justify-content: center;
   font-weight: 700;
   cursor: pointer;
-  transition: transform 120ms ease, box-shadow 120ms ease;
+  transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease;
+  color: var(--text);
 }
 
+.nav-arrow svg {
+  display: block;
+}
+
+.nav-arrow:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.nav-arrow:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(12, 45, 20, 0.08);
+  background: rgba(255,255,255,0.96);
+}
 .nav-arrow:disabled {
   opacity: 0.45;
   cursor: not-allowed;
