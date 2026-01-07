@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { getRevealCelebration } from '../utils/rewardMessages';
 import '../styles/paymentSuccess.css';
+import { Gift } from 'phosphor-react';
 
 const CARD_WIDTH = 278;
 const CARD_HEIGHT = 165;
@@ -263,24 +264,34 @@ const RewardScratchCard = ({ reward = null, isScratched = false, onReveal = null
           onDragStart={(e) => e.preventDefault()}
           style={{ userSelect: 'none', WebkitUserSelect: 'none', MozUserSelect: 'none', msUserSelect: 'none' }}
         >
-          <div
-            className={`reward-text${scratched ? ' reveal-fade-in' : ' hidden-unrevealed'}`}
-            aria-live="polite"
-            aria-atomic="true"
-            style={{ 
-              opacity: scratched ? 1 : 0,
-              transform: scratched ? 'translateY(0)' : 'translateY(4px)',
-              zIndex: 2,
-              userSelect: 'none',
-              WebkitUserSelect: 'none',
-              MozUserSelect: 'none',
-              msUserSelect: 'none',
-              pointerEvents: 'none'
-            }}
-            onSelectStart={(e) => e.preventDefault()}
-            onDragStart={(e) => e.preventDefault()}
-          >
-            {rewardText}
+          <div className="reward-visual" aria-hidden={scratched ? 'false' : 'true'}>
+            <div className={`reward-icon ${scratched ? 'visible' : 'hint'}`} aria-hidden="true">
+              <Gift size={36} weight="duotone" />
+            </div>
+
+            <div className={`reward-value ${scratched ? 'visible' : 'hint'}`} aria-hidden="true">
+              {reward?.rewardValue ? `₹${reward.rewardValue}` : reward?.description}
+            </div>
+
+            <div
+              className={`reward-text${scratched ? ' reveal-fade-in' : ' hidden-unrevealed'}`}
+              aria-live="polite"
+              aria-atomic="true"
+              style={{ 
+                opacity: scratched ? 1 : 0,
+                transform: scratched ? 'translateY(0)' : 'translateY(4px)',
+                zIndex: 2,
+                userSelect: 'none',
+                WebkitUserSelect: 'none',
+                MozUserSelect: 'none',
+                msUserSelect: 'none',
+                pointerEvents: 'none'
+              }}
+              onSelectStart={(e) => e.preventDefault()}
+              onDragStart={(e) => e.preventDefault()}
+            >
+              {rewardText}
+            </div>
           </div>
           {/* Canvas overlay for scratching */}
           <canvas
