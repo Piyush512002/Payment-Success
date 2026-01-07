@@ -63,25 +63,43 @@ const RewardsContainer = ({
       )}
 
       <div className="reward-carousel">
-        {/* stacked previews behind the main card */}
+        {/* stacked previews behind the main card - show only current and the next few */}
         <div className="reward-stack" aria-hidden="true">
           {rewards.map((r, idx) => {
-            // only show a few behind for performance
-            const offset = idx - index;
-            const behind = offset > 0 && offset <= 4; // up to 4 behind
-            const z = 100 - idx;
+            const offset = idx - index; // 0 = current, 1 = next, etc
+            const showInStack = offset >= 0 && offset <= 4; // show current + up to 4 ahead
+            if (!showInStack) return null;
+
+            const isActive = offset === 0;
+            const z = 1000 - offset; // ensure current is on top
+            const scale = isActive ? 1 : 0.96 - Math.min(0.06 * offset, 0.18);
+            const translateY = offset * 8;
+
             return (
               <div
                 key={r.id}
-                className={`reward-stack-item ${idx === index ? 'active' : ''} ${r.isScratched ? 'scratched' : 'unrevealed'}`}
-                style={{ transform: `translateY(${(idx - index) * 8}px) scale(${idx === index ? 1 : 0.96 - Math.min(0.06 * Math.abs(idx - index), 0.18)})`, zIndex: z }}
+                className={`reward-stack-item ${isActive ? 'active' : ''} ${r.isScratched ? 'scratched' : 'unrevealed'}`}
+                style={{ transform: `translateY(${translateY}px) scale(${scale})`, zIndex: z }}
                 onClick={() => setIndex(idx)}
+                aria-hidden={isActive ? 'false' : 'true'}
               >
                 <div className="preview-title">{r.title}</div>
-                {r.isScratched ? (
-                  <div className="preview-value">{r.description}</div>
+
+                {isActive ? (
+                  r.isScratched ? (
+                    <div className="preview-value">{r.description}</div>
+                  ) : (
+                    <div className="preview-overlay">Scratch to reveal</div>
+                  )
                 ) : (
-                  <div className="preview-overlay">Scratch to reveal</div>
+                  // compact preview for items behind the active card
+                  <div className="preview-compact">
+                    {r.isScratched ? (
+                      <div className="preview-value small">{r.description}</div>
+                    ) : (
+                      <div className="preview-overlay small">Scratch</div>
+                    )}
+                  </div>
                 )}
               </div>
             );

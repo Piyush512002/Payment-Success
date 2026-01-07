@@ -893,16 +893,37 @@
   border: 1px solid rgba(18, 92, 38, 0.06);
   transition: transform 260ms cubic-bezier(.2,.9,.2,1), opacity 220ms ease, box-shadow 260ms ease;
   opacity: 0.96;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
   font-weight: 700;
   color: var(--text);
   font-size: 0.95rem;
   margin-bottom: 4px;
 }
 
+.preview-compact {
+  opacity: 0.9;
+  font-size: 0.85rem;
+  color: var(--muted-2);
+}
+
+.preview-value.small {
+  font-weight: 600;
+  color: var(--text);
+  font-size: 0.8rem;
+}
+
+.preview-overlay.small {
+  font-size: 0.82rem;
+  color: var(--muted-2);
+}
+
 .reward-stack-item .preview-value {
   color: #0b3a1b;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
 }
 
 .reward-stack-item .preview-overlay {
@@ -948,7 +969,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 80px; /* give space for stacked previews */
+  padding-top: 100px; /* give space for stacked previews */
 }
 
 .carousel-controls {
@@ -972,8 +993,8 @@
 
 .reward-count {
   position: absolute;
-  right: 12px;
-  top: -28px;
+  right: -26px;
+  top: -51px;
   z-index: 40;
 }
 
