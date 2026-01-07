@@ -332,6 +332,11 @@ const RewardScratchCard = ({ reward = null, isScratched = false, onReveal = null
               handleEnd();
             }}
           ></canvas>
+
+          {!scratched && !isDisabled && (
+            <div className="scratch-overlay shimmer" aria-hidden="true" />
+          )}
+
           {!scratched && !isDisabled && (
             <span 
               className="scratch-instructions scratch-canvas-instructions user-select-none"

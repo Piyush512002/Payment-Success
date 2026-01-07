@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import SuccessHeader from './SuccessHeader';
 import RewardsContainer from './RewardsContainer';
 import RewardProgress from './RewardProgress';
+import { ArrowLeft } from 'phosphor-react';
 import { fetchMockRewards } from '../data/mockRewards';
 import { getRewardStatusMessage, getNextStepGuidance } from '../utils/rewardMessages';
 import '../styles/paymentSuccess.css';
@@ -70,7 +71,8 @@ const PaymentSuccess = () => {
                 }}
                 aria-label="Back to payment details"
               >
-                ← Back
+                <ArrowLeft size={16} weight="bold" aria-hidden="true" />
+                <span className="back-label">Back</span>
               </button>
               <h2 className="rewards-view-title">Your Rewards</h2>
             </div>

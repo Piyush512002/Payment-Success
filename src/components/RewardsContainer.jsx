@@ -35,6 +35,14 @@ const RewardsContainer = ({
     setIndex((i) => Math.min(rewards.length - 1, i + 1));
   }, [rewards.length]);
 
+  // Motion variants to make cards appear from the back/front with a subtle rotate/scale
+  const cardVariants = {
+    enter: (dir) => ({ opacity: 0, scale: 0.92, y: 18, rotateX: 18, transformPerspective: 900 }),
+    center: { opacity: 1, scale: 1, y: 0, rotateX: 0, zIndex: 2 },
+    exit: (dir) => ({ opacity: 0, scale: 0.96, y: -12, rotateX: -12 })
+  };
+
+
   // keyboard navigation: left/right when focused inside container
   const handleKeyDown = (e) => {
     if (e.key === 'ArrowLeft') goPrev();
@@ -42,6 +50,9 @@ const RewardsContainer = ({
   };
 
   const current = rewards[index];
+
+  // for assistive tech announce current reward when it changes
+  const announceText = `Showing reward ${index + 1} of ${rewards.length}: ${current?.title || ''}`;
 
   return (
     <div className="rewards-container" role="region" aria-label="Rewards scratch cards" tabIndex={0} onKeyDown={handleKeyDown}>
@@ -80,7 +91,7 @@ const RewardsContainer = ({
         <div className="carousel-main">
           <div className="carousel-controls">
             <button className="nav-arrow nav-prev" onClick={goPrev} aria-label="Previous reward" disabled={index === 0}>
-              ←
+              <ArrowLeft size={20} weight="bold" aria-hidden="true" />
             </button>
 
             <div className="carousel-card-wrapper">
@@ -127,15 +138,16 @@ const RewardsContainer = ({
                   aria-label={`Reward ${index + 1} of ${rewards.length}`}
                 />
               </div>
-              <div className="carousel-card">
-                <AnimatePresence initial={false} custom={dir} exitBeforeEnter>
+              <div className="carousel-card" aria-live="polite">
+                <AnimatePresence initial={false} custom={dir} mode="wait">
                   <motion.div
                     key={index}
                     custom={dir}
-                    initial={(d) => ({ opacity: 0, x: d > 0 ? 40 : -40 })}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={(d) => ({ opacity: 0, x: d > 0 ? -40 : 40 })}
-                    transition={{ duration: 0.32, ease: [0.2, 0.9, 0.2, 1] }}
+                    variants={cardVariants}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    transition={{ duration: 0.42, ease: [0.2, 0.9, 0.2, 1] }}
                     className="carousel-card-inner"
                   >
                     {current.title && <h3 className="reward-item-title visible-title">{current.title}</h3>}
@@ -150,11 +162,14 @@ const RewardsContainer = ({
             </div>
 
             <button className="nav-arrow nav-next" onClick={goNext} aria-label="Next reward" disabled={index === rewards.length - 1}>
-              →
+              <ArrowRight size={20} weight="bold" aria-hidden="true" />
             </button>
           </div>
         </div>
       </div>
+
+      {/* Aria live announcement for current card */}
+      <div className="sr-only" aria-live="polite" aria-atomic="true">{announceText}</div>
 
       {allRevealed && (
         <div className="rewards-completion-message">
