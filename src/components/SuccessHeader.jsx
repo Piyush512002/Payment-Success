@@ -4,11 +4,15 @@ import '../styles/paymentSuccess.css';
 const SuccessHeader = () => {
   return (
     <header className="success-header" aria-label="success">
-      <div className="success-icon-placeholder" aria-hidden="true">
-        <svg viewBox="0 0 64 64" width="56" height="56" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="32" cy="32" r="30" fill="#78e78e"/>
-          <path d="M18 33.5L28 43.5L46 23.5" stroke="#14421e" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round"/>
+      <div className="success-brand">
+        <svg width="40" height="40" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect width="48" height="48" rx="10" fill="#ffffff" />
+          <path d="M14.5 24.5L20.5 30.5L33.5 17.5" stroke="#16a34a" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
+        <div className="brand-text">
+          <div className="brand-name">PaySuccess</div>
+          <div className="brand-sub">Receipt</div>
+        </div>
       </div>
     </header>
   );

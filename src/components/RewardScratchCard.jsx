@@ -255,7 +255,7 @@ const RewardScratchCard = ({ reward = null, isScratched = false, onReveal = null
         onKeyDown={handleKeyDown}
         onSelectStart={(e) => e.preventDefault()}
         onDragStart={(e) => e.preventDefault()}
-        style={{ userSelect: 'none', WebkitUserSelect: 'none', MozUserSelect: 'none', msUserSelect: 'none' }}
+        style={{ userSelect: 'none', WebkitUserSelect: 'none', MozUserSelect: 'none', msUserSelect: 'none', borderRadius: 14 }}
       >
         <div 
           className="reward-content"
